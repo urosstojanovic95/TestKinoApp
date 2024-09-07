@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">TestKInoApp</string>
+    <string name="flag">Flag</string>
+    <string name="grcki_kino">Grcki Kino</string>
+    <string name="kolo_u">Kolo u </string>
+    <string name="brze_igre">Brze Igre</string>
+    <string name="rezultati">Rezultati</string>
+    <string name="splash_logo_description">Splash logo description</string>
+    <string name="kvota">Kvota</string>
+    <string name="kolo">Kolo</string>
+    <string name="u">u</string>
+    <string name="izvlacenje">Izvlacenje</string>
 </resources>
