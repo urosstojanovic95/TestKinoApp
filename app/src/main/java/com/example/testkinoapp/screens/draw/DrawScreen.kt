@@ -24,47 +24,54 @@ import com.example.testkinoapp.ui_components.grids.DrawGrid
 import com.example.testkinoapp.ui_components.headers.DrawHeader
 import com.example.testkinoapp.ui_components.loaders.Loader
 
-@Preview
 @Composable
 fun DrawScreen(
     onItemClick: (Draw) -> Unit = {}
 ) {
-//    MainTheme() {
-        val viewModel: DrawViewModel = viewModel()
 
-        LaunchedEffect(Unit) {
-            viewModel.getDraws()
-        }
-        var expandedHeader by remember { mutableStateOf(true) }
+    val viewModel: DrawViewModel = viewModel()
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = 10.dp)
-        ) {
-            item {
-                DrawHeader(
-                    modifier = Modifier.padding(horizontal = 10.dp),
-                    drawCount = viewModel.draws.value.size,
-                    onClick = { expandedHeader = !expandedHeader }
+    LaunchedEffect(Unit) {
+        viewModel.getDraws()
+    }
+    var expandedHeader by remember { mutableStateOf(true) }
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(vertical = 10.dp)
+    ) {
+        item {
+            DrawHeader(
+                modifier = Modifier.padding(horizontal = 10.dp),
+                drawCount = viewModel.draws.value.size,
+                onClick = { expandedHeader = !expandedHeader }
+            )
+            AnimatedVisibility(
+                visible = expandedHeader,
+                enter = expandVertically(tween(300)),
+                exit = shrinkVertically(tween(300))
+            ) {
+                DrawGrid(
+                    items = viewModel.draws.value,
+                    removeItem = viewModel::removeDraw,
+                    onItemClick = onItemClick
                 )
-                AnimatedVisibility(
-                    visible = expandedHeader,
-                    enter = fadeIn(animationSpec = tween(300)) + expandVertically(tween(300)),
-                    exit = fadeOut(animationSpec = tween(300)) + shrinkVertically(tween(300))
-                ) {
-                    DrawGrid(
-                        items = viewModel.draws.value,
-                        removeItem = viewModel::removeDraw,
-                        onItemClick = onItemClick
-                    )
-                }
             }
         }
-        if (viewModel.loading.value) {
-            Loader()
-        }
-//    }
+    }
+    if (viewModel.loading.value) {
+        Loader()
+    }
 
 }
+
+@Preview
+@Composable
+fun DrawScreenPreview(
+    onItemClick: (Draw) -> Unit = {}
+) {
+    DrawScreen()
+}
+
 

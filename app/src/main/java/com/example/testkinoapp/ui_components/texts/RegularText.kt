@@ -13,13 +13,14 @@ import com.example.testkinoapp.R
 
 @Composable
 fun RegularText(
+    modifier: Modifier = Modifier,
     text: String,
     textAlign: TextAlign = TextAlign.Center,
     color: Color = colorResource(id = R.color.textColor),
     fontSize: Int = R.dimen.mediumText
 ) {
     Text(
-        modifier = Modifier,
+        modifier = modifier,
         text = text,
         textAlign = textAlign,
         style = TextStyle(

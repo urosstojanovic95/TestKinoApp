@@ -20,28 +20,27 @@ import com.example.testkinoapp.extensions.tableItemBackground
 
 @Composable
 fun TableItem(
-    index: Int,
+    number: Int,
     onItemClick: () -> Unit = {},
-    addingEnabled: Boolean = true
+    addingEnabled: Boolean = true,
+    preSelected: Boolean = false,
 ) {
-    val selected = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .padding(4.dp)
             .size(40.dp)
             .clip(CircleShape)
-            .tableItemBackground(selected.value, index)
+            .tableItemBackground(preSelected, number)
             .clickable {
-                if (selected.value || addingEnabled) {
-                    selected.value = !selected.value
+                if (preSelected|| addingEnabled) {
                     onItemClick()
                 }
             },
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = index.toString(),
-            color = if (selected.value) Color.Black else colorResource(id = R.color.textColor),
+            text = number.toString(),
+            color = if (preSelected) Color.Black else colorResource(id = R.color.textColor),
         )
     }
 }

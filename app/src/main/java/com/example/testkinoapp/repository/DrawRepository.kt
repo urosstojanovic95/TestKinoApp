@@ -1,6 +1,7 @@
 package com.example.testkinoapp.repository
 
 import com.example.testkinoapp.model.Draw
+import com.example.testkinoapp.model.ResultsResponse
 import com.example.testkinoapp.services.Api
 import com.example.testkinoapp.utils.Constants
 import io.ktor.client.call.body
@@ -15,6 +16,11 @@ object DrawRepository {
 
     suspend fun getDraw(drawId: Long): Draw {
         return Api.client.get(Endpoints.Default.draws + Endpoints.Default.apiV3 + "/" + Constants.GREEK_KINO_ID + "/$drawId") {
+        }.body()
+    }
+
+    suspend fun getResults(fromDate: String, endDate: String): ResultsResponse {
+        return Api.client.get(Endpoints.Default.draws + Endpoints.Default.apiV3 + "/" + Constants.GREEK_KINO_ID + Endpoints.Default.drawDate + "/$fromDate/$endDate") {
         }.body()
     }
 }

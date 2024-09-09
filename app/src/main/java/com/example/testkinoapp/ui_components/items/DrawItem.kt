@@ -10,10 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,12 +21,9 @@ import com.example.testkinoapp.model.Draw
 import com.example.testkinoapp.ui_components.texts.RegularText
 import com.example.testkinoapp.utils.DummyData
 import com.example.testkinoapp.utils.Tools
-import kotlinx.coroutines.delay
-import java.time.Duration
 import java.time.Instant
 
 @SuppressLint("DefaultLocale")
-@Preview
 @Composable
 fun DrawItem(
     draw: Draw = DummyData.draw,
@@ -41,7 +36,7 @@ fun DrawItem(
 
     LaunchedEffect(Unit) {
 
-        Tools.Timer(
+        Tools.timer(
             endTime = Instant.ofEpochMilli(draw.drawTime ?: 0),
             timeState = time,
             onTimeElapsed = {
@@ -65,4 +60,11 @@ fun DrawItem(
         }
         HorizontalDivider()
     }
+}
+
+@Preview
+@Composable
+fun DrawItemPreview(
+) {
+    DrawItem(draw = DummyData.draw)
 }

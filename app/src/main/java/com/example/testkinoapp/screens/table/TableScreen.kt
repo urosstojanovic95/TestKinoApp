@@ -2,56 +2,45 @@ package com.example.testkinoapp.screens.table
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import com.example.testkinoapp.R
-import com.example.testkinoapp.model.Draw
+import com.example.testkinoapp.ui_components.buttons.ActionButton
 import com.example.testkinoapp.ui_components.cards.FloatingCard
-import com.example.testkinoapp.ui_components.custom.Timer
+import com.example.testkinoapp.ui_components.drop_down.RandomDropDown
 import com.example.testkinoapp.ui_components.grids.TableGrid
 import com.example.testkinoapp.ui_components.texts.RegularText
-import com.example.testkinoapp.utils.Constants
-import com.example.testkinoapp.utils.DummyData
 import com.example.testkinoapp.utils.Tools
-import kotlinx.coroutines.delay
-import java.sql.Time
-import java.time.Duration
 import java.time.Instant
 
-@Preview
 @Composable
 fun TableScreen(
     drawId: Long = 0,
-    openLiveDraw: () -> Unit = {}
+    openLiveDraw: () -> Unit = {},
 ) {
     val viewModel: TableViewModel = viewModel()
     var time = remember { mutableStateOf("00:00") }
@@ -59,7 +48,7 @@ fun TableScreen(
     LaunchedEffect(Unit) {
         viewModel.getDraw(drawId)
         viewModel.eventFlow.collect {
-            Tools.Timer(
+            Tools.timer(
                 endTime = Instant.ofEpochMilli(viewModel.draw.value.drawTime ?: 0),
                 timeState = time,
                 onTimeElapsed = {
@@ -73,8 +62,14 @@ fun TableScreen(
             .background(colorResource(id = R.color.backgroundColor))
             .fillMaxSize()
     ) {
-        Row(modifier = Modifier.padding(16.dp)) {
-            RegularText(text = stringResource(id = R.string.kolo) + " ${viewModel.draw.value.drawId ?: ""}. ")
+        Row(
+            modifier = Modifier
+                .background(Color.DarkGray)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
+        ) {
+            RegularText(
+                text = stringResource(id = R.string.kolo) + " ${viewModel.draw.value.drawId ?: ""}. "
+            )
             RegularText(text = stringResource(id = R.string.u) + " ${viewModel.draw.value.hourAndMinute}`")
             Spacer(modifier = Modifier.weight(1f))
             RegularText(
@@ -82,7 +77,20 @@ fun TableScreen(
                 color = colorResource(id = R.color.colorSecondary)
             )
         }
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            RandomDropDown(
+                onItemClick = viewModel::choseRandomNumber
+            )
+            ActionButton(text = stringResource(id = R.string.obrisi), onClick = viewModel::clearAllNumbers)
+
+        }
         TableGrid(
+            selectedNumber = viewModel.selectedNumbers.value,
             onItemClick = viewModel::onItemClick,
             addingEnabled = viewModel.addingEnabled
         )
@@ -110,3 +118,14 @@ fun TableScreen(
         }
     }
 }
+
+@Preview
+@Composable
+fun TableScreenPreview(
+    drawId: Long = 0,
+    openLiveDraw: () -> Unit = {},
+) {
+    TableScreen()
+}
+
+

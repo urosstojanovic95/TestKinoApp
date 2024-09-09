@@ -10,34 +10,38 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.testkinoapp.R
 import com.example.testkinoapp.utils.Destination
 
 @Composable
 fun BottomNavigationBar(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
     items: List<Destination.BottomNavigationScreens>
 ) {
 
 
     BottomNavigation(
+        modifier = modifier,
         windowInsets = BottomNavigationDefaults.windowInsets,
         backgroundColor = colorResource(id = R.color.colorPrimary)
     ) {
         items.forEachIndexed { index, item ->
-            val selected = remember {
-                mutableStateOf(item.route == Destination.BottomNavigationScreens.Draw.route)
-            }
+
+            val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
             BottomNavigationItem(
                 icon = {
                     Icon(
                         painterResource(id = item.iconId),
                         contentDescription = null,
-                        tint = if (selected.value) {
+                        tint = if (currentRoute==item.route) {
                             colorResource(id = R.color.colorSecondary)
                         } else {
                             colorResource(id = R.color.textColor)
@@ -47,16 +51,15 @@ fun BottomNavigationBar(
                 label = {
                     Text(
                         stringResource(id = item.labelId),
-                        color = if (selected.value) {
+                        color = if (currentRoute==item.route)  {
                             colorResource(id = R.color.colorSecondary)
                         } else {
                             colorResource(id = R.color.textColor)
                         }
                     )
                 },
-                selected = selected.value,
+                selected = currentRoute == item.route,
                 onClick = {
-                    selected.value = true
                     navController.navigate(item.route) {
                         launchSingleTop = true
                     }

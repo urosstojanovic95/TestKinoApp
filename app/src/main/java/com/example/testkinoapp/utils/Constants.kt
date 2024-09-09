@@ -4,7 +4,7 @@ object Constants {
     const val GREEK_KINO_ID: String = "1100"
     const val LIVE_URL: String = "https://mozzartbet.com/sr/lotto-animation/26#"
     const val MAX_NUMBERS: Int = 15
-
+    const val DEFAULT_DATE_FORMAT: String = "yyyy-MM-dd HH:mm"
     enum class DrawStatus(val value: String) {
         ACTIVE("active"),
         FUTURE("future")

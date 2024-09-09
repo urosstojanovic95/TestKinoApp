@@ -8,10 +8,28 @@ import com.example.testkinoapp.BuildConfig
 import kotlinx.coroutines.delay
 import java.time.Duration
 import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 object Tools {
 
-    suspend fun Timer(
+    fun getTodayDateRange(): String {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val today: LocalDate = LocalDate.now()
+        val fromDate = today.format(formatter)
+
+        return fromDate
+    }
+
+    fun formatTimestamp(timestamp: Long,format: String): String {
+        val formatter = DateTimeFormatter.ofPattern(format)
+            .withZone(ZoneId.systemDefault())
+        return formatter.format(Instant.ofEpochMilli(timestamp))
+    }
+
+
+    suspend fun timer(
         endTime: Instant,
         timeState: MutableState<String>,
         onTimeElapsed: () -> Unit
@@ -24,11 +42,9 @@ object Tools {
                 onTimeElapsed()
                 break
             }
-            Tools.log("test timer start $currentTime")
-            Tools.log("test timer end $endTime")
+
             val minutes = duration.toMinutes() % 60
             val seconds = duration.seconds % 60
-            Tools.log("test timer minutes $seconds")
             timeState.value = String.format("%02d:%02d", minutes, seconds)
             delay(1000)
         }

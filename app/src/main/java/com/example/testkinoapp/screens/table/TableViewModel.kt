@@ -20,6 +20,23 @@ class TableViewModel : BaseViewModel() {
     val addingEnabled: Boolean
         get() = selectedNumbers.value.size < Constants.MAX_NUMBERS
 
+    fun choseRandomNumber(number: Int) {
+        var randomNumbers = number
+        if (selectedNumbers.value.size + randomNumbers > Constants.MAX_NUMBERS) {
+            randomNumbers = Constants.MAX_NUMBERS - selectedNumbers.value.size
+        }
+        for (i in 0 until randomNumbers) {
+            val range = (0..80).filter { it !in selectedNumbers.value }
+            selectedNumbers.value = selectedNumbers.value.toMutableList().apply {
+                add(range.random())
+            }
+        }
+    }
+
+    fun clearAllNumbers() {
+        selectedNumbers.value = emptyList()
+    }
+
     fun getDraw(drawId: Long) {
         loading.value = true
         coroutineScope.launch {
@@ -38,6 +55,5 @@ class TableViewModel : BaseViewModel() {
                 add(number)
             }
         }
-        Tools.log("added numbers ${selectedNumbers.value.size}")
     }
 }

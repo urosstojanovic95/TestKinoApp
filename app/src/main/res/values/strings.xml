@@ -10,4 +10,7 @@
     <string name="kolo">Kolo</string>
     <string name="u">u</string>
     <string name="izvlacenje">Izvlacenje</string>
+    <string name="slucajno">Slucajni</string>
+    <string name="obrisi">Obrisi sve</string>
+    <string name="vreme_izvlacenja">"Vreme izvlacenja: "</string>
 </resources>

@@ -10,15 +10,14 @@ import com.example.testkinoapp.model.Draw
 import com.example.testkinoapp.ui_components.items.DrawItem
 import com.example.testkinoapp.utils.DummyData
 
-@Preview
 @Composable
 fun DrawGrid(
-    items: List<Draw> = DummyData.draws,
+    items: List<Draw>,
     removeItem: (Draw) -> Unit = {},
     onItemClick: (Draw) -> Unit = {}
 ) {
 
-    Column(Modifier.animateContentSize()) {
+    Column() {
         items.forEach { item ->
             DrawItem(
                 item,
@@ -29,7 +28,12 @@ fun DrawGrid(
                     removeItem(item)
                 }
             )
-
         }
     }
+}
+
+@Preview
+@Composable
+fun DrawGridPreview() {
+    DrawGrid(items = DummyData.draws)
 }
